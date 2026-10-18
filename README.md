@@ -7,6 +7,8 @@ React + TypeScript + Vite + Three.js / React Three Fiber / drei + Zustand + Web 
 
 > 这是一把教学用参考键盘，不宣称精确复刻任何真实量产产品。
 
+**在线演示：** https://book.fern-li.cn/keyboard-emulator/
+
 ![产品预览](docs/preview.png)
 
 ## 快速开始
@@ -37,7 +39,7 @@ git push -u origin main
 2. 打开仓库 **Settings → Pages**，把 **Build and deployment → Source** 设为 **GitHub Actions**。
    - 这一步必须由仓库管理员在网页端完成一次；`GITHUB_TOKEN` 没有开启 Pages 的管理员权限。
 3. 工作流会自动执行 `npm ci`、`npm test`、`npm run build`，并把 `dist/` 发布为 Pages artifact。
-4. 部署完成后访问 `https://<你的用户名>.github.io/<仓库名>/`。
+4. 部署完成后访问 `https://<你的用户名>.github.io/<仓库名>/`；当前仓库的线上地址是 https://book.fern-li.cn/keyboard-emulator/。
 
 也可以用 GitHub CLI 一次完成建库和推送（需要先 `gh auth login`）：
 
