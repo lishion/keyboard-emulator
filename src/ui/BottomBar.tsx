@@ -34,9 +34,7 @@ function ExplodeControls() {
   const explode = useAppStore((state) => state.explodeTarget);
   const setExplode = useAppStore((state) => state.setExplode);
   const showLabels = useAppStore((state) => state.showLabels);
-  const showGuides = useAppStore((state) => state.showGuides);
   const setShowLabels = useAppStore((state) => state.setShowLabels);
-  const setShowGuides = useAppStore((state) => state.setShowGuides);
   const mode = useAppStore((state) => state.mode);
 
   const expand = () => {
@@ -78,9 +76,6 @@ function ExplodeControls() {
           <>
             <button className={`pill-toggle ${showLabels ? 'is-on' : ''}`} onClick={() => setShowLabels(!showLabels)}>
               名称标签
-            </button>
-            <button className={`pill-toggle ${showGuides ? 'is-on' : ''}`} onClick={() => setShowGuides(!showGuides)}>
-              引导线
             </button>
           </>
         ) : null}

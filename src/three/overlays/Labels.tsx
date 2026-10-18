@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
@@ -38,27 +38,9 @@ const HERO_LABELS: LabelSpec[] = [
   { id: 'hero-pole-center', text: '定位柱 ×3', anchorOffset: [0, 0, 0], offset: [-15, -8, 0] },
 ];
 
-function LabelItem({ spec, factor, guides }: { spec: LabelSpec; factor: number; guides: boolean }) {
+function LabelItem({ spec, factor }: { spec: LabelSpec; factor: number }) {
   const group = useRef<THREE.Group>(null);
-  const line = useMemo(() => {
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(new Float32Array([0, 0, 0, 0, 0, 0]), 3),
-    );
-    const material = new THREE.LineBasicMaterial({
-      color: '#e87432',
-      transparent: true,
-      opacity: 0.36,
-      depthWrite: false,
-    });
-    return new THREE.Line(geometry, material);
-  }, []);
   const anchor = useMemo(() => new THREE.Vector3(), []);
-  useEffect(() => () => {
-    line.geometry.dispose();
-    (line.material as THREE.Material).dispose();
-  }, [line]);
   useFrame(() => {
     director.getPartLocalPosition(spec.id, anchor);
     anchor.set(
@@ -73,16 +55,10 @@ function LabelItem({ spec, factor, guides }: { spec: LabelSpec; factor: number; 
         anchor.z + spec.offset[2],
       );
     }
-    const attribute = line.geometry.getAttribute('position') as THREE.BufferAttribute;
-    attribute.setXYZ(0, anchor.x, anchor.y, anchor.z);
-    attribute.setXYZ(1, anchor.x + spec.offset[0], anchor.y + spec.offset[1], anchor.z + spec.offset[2]);
-    attribute.needsUpdate = true;
-    line.geometry.computeBoundingSphere();
   });
 
   return (
     <group ref={group}>
-      {guides ? <primitive object={line} /> : null}
       <Html center distanceFactor={factor} zIndexRange={[20, 0]} style={{ pointerEvents: 'none' }}>
         <div className="part-label">{spec.text}</div>
       </Html>
@@ -93,7 +69,6 @@ function LabelItem({ spec, factor, guides }: { spec: LabelSpec; factor: number; 
 export function Labels() {
   const mode = useAppStore((state) => state.mode);
   const showLabels = useAppStore((state) => state.showLabels);
-  const showGuides = useAppStore((state) => state.showGuides);
   const stepIndex = useAppStore((state) => state.teaching.stepIndex);
   const explode = useAppStore((state) => state.explode);
   const heroStage = mode === 'axis' || (mode === 'teach' && stepIndex >= HERO_STEP_INDEX);
@@ -102,12 +77,12 @@ export function Labels() {
     <group>
       {showLabels && mode === 'explode' && explode > 0.06
         ? KEYBOARD_LABELS.map((spec) => (
-            <LabelItem key={spec.id} spec={spec} factor={42} guides={showGuides} />
+            <LabelItem key={spec.id} spec={spec} factor={42} />
           ))
         : null}
       {showLabels && heroStage
         ? HERO_LABELS.map((spec) => (
-            <LabelItem key={spec.id} spec={spec} factor={7} guides={showGuides} />
+            <LabelItem key={spec.id} spec={spec} factor={7} />
           ))
         : null}
     </group>

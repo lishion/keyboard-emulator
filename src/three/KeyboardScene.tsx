@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, Lightformer, Line, OrbitControls } from '@react-three/drei';
+import { Environment, Lightformer, OrbitControls } from '@react-three/drei';
 import { MM } from '../config/constants';
 import { THEMES } from '../config/themes';
 import { HERO_STEP_INDEX } from '../data/steps';
@@ -41,35 +41,6 @@ function ReadySignal() {
   });
   return null;
 }
-
-function LayerGuides({ visible }: { visible: boolean }) {
-  if (!visible) return null;
-  const xs = [-196, 196];
-  const zs = [-78, 78];
-  return (
-    <group>
-      {xs.map((x) =>
-        zs.map((z) => (
-          <Line
-            key={`${x}-${z}`}
-            points={[
-              [x, -2, z],
-              [x, 224, z],
-            ]}
-            color="#e87432"
-            lineWidth={0.7}
-            dashed
-            dashSize={4}
-            gapSize={5}
-            transparent
-            opacity={0.28}
-          />
-        )),
-      )}
-    </group>
-  );
-}
-
 
 function SoftGround() {
   const mode = useAppStore((state) => state.mode);
@@ -116,8 +87,6 @@ function Stage() {
   const quality = useAppStore((state) => state.quality);
   const mode = useAppStore((state) => state.mode);
   const stepIndex = useAppStore((state) => state.teaching.stepIndex);
-  const showGuides = useAppStore((state) => state.showGuides);
-  const explode = useAppStore((state) => state.explode);
   const theme = THEMES[themeKey];
   const heroStage = mode === 'axis' || (mode === 'teach' && stepIndex >= HERO_STEP_INDEX);
 
@@ -175,7 +144,6 @@ function Stage() {
         <SwitchField />
         <Keycaps />
         <KeyGlow />
-        <LayerGuides visible={showGuides && mode === 'explode' && explode > 0.12} />
       </group>
 
       <group scale={MM} visible={heroStage}>

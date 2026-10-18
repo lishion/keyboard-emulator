@@ -46,7 +46,6 @@ interface AppState {
   isolateId: string | null;
   categoryVisibility: Record<VisibilityCategory, boolean>;
   showLabels: boolean;
-  showGuides: boolean;
   panelTab: PanelTab;
   appearance: AppearanceRecord;
   leftOpen: boolean;
@@ -82,7 +81,6 @@ interface AppState {
   isolateSelected: () => void;
   clearIsolate: () => void;
   setShowLabels: (visible: boolean) => void;
-  setShowGuides: (visible: boolean) => void;
   setPanelTab: (tab: PanelTab) => void;
   applyAppearance: (ids: string[], patch: AppearanceValues) => void;
   resetAppearance: (ids: string[]) => void;
@@ -135,7 +133,6 @@ export const useAppStore = create<AppState>((set, get) => ({
   isolateId: null,
   categoryVisibility: allVisible(),
   showLabels: true,
-  showGuides: true,
   panelTab: 'detail',
   appearance: loadAppearance(),
   leftOpen: false,
@@ -259,7 +256,6 @@ export const useAppStore = create<AppState>((set, get) => ({
   clearIsolate: () => set({ isolateId: null }),
 
   setShowLabels: (showLabels) => set({ showLabels }),
-  setShowGuides: (showGuides) => set({ showGuides }),
   setPanelTab: (panelTab) => set({ panelTab, rightOpen: true }),
 
   applyAppearance: (ids, patch) => {
